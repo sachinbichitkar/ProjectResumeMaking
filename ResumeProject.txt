@@ -1,0 +1,5 @@
+CREATE database MyBasicProject
+
+USE MyBasicProject	
+
+CREATE table User(UserId int Primary key Auto_Increment,UserName varchar(25), UserEmail varchar(25), UserDob Date, UserType bit);
