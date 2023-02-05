@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
+
+    <script src="./User.js"></script>
+
+
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -126,19 +130,19 @@ margin-left: 4px;
                     </div>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="http://localhost:1080/userLogin" method="post">
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="username">
+                            <input type="text" class="form-control" id="Email" placeholder="Email" name="Email">
                             
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control" placeholder="password">
+                            <input type="password" class="form-control" placeholder="password" name="Password">
                         </div>
                         <div class="row align-items-center remember">
                             <input type="checkbox">Remember Me

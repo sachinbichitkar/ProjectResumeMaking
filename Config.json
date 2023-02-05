@@ -1,3 +1,11 @@
 {
-    "ENV" :"api"
+    "ENV" :"api",
+    "dbparams" : {
+                    "host": "localhost",
+                    "user": "root",
+                    "password" : "cdac",
+                    "database": "MyBasicProject",
+                    "port" : 3306
+                },
+    "BaseUrl":"http://127.0.0.1:5500/ResumeMakingProject/ClientSide/"
 }

@@ -1,17 +1,11 @@
 const data = require('../Config.json');
-let dbparams = {
-    host: "localhost",
-    user: "root",
-    password: "cdac",
-    database: "MyBasicProject",
-    port: 3306,
-  };
-  const mysql = require("mysql2");
-  const connection = mysql.createConnection(dbparams);
 
-  const bodyParser = require("body-parser");
+const mysql = require("mysql2");
+const connection = mysql.createConnection(data.dbparams);
 
-  const express = require("express");
+const bodyParser = require("body-parser");
+
+const express = require("express");
 const { ok } = require("assert");
 const { error } = require("console");
   const app = express();
@@ -27,11 +21,11 @@ const { error } = require("console");
   });
 
 
-  app.get("/hello", (req, resp) => {
+app.get("/hello", (req, resp) => {
     resp.send("Hello world");
-  });
+});
 
-  app.post("/registerNewUser",urlencodedParser,(req,res)=>{
+app.post("/registerNewUser",urlencodedParser,(req,res)=>{
     var UserName=req.body.UserName;
     var Email=req.body.Email;
     var UserDob=req.body.UserDob;
@@ -46,7 +40,7 @@ const { error } = require("console");
                 }
                 else{ 
                         if(rows.affectedRows==1){
-                            res.sendStatus(200);
+                            res.redirect(data.BaseUrl+'Login.html');
                         }
                 }
             });
@@ -56,4 +50,66 @@ const { error } = require("console");
            //connection.end();
         }  
 });
-  
+
+app.post("/userLogin",urlencodedParser,(req,res)=>{
+  //console.log(req.body);
+  var Email=req.body.Email;
+  var Password = Buffer.from(req.body.Password,'utf8').toString('base64');
+  try{    
+    connection.connect();
+    connection.query('SELECT * from User where UserEmail = ? ;',[Email],(err,rows,fields)=>{
+        if(err){
+            console.log(err);
+            //res.sendStatus(400);
+            res.redirect(data.BaseUrl+'Login.html');
+        }
+        else{ 
+              if(rows.length === 1 ){
+                //res.sendStatus(400);
+                if(rows[0].Password === Password){
+                  //res.sendStatus(200);
+                  res.redirect(data.BaseUrl+'Index.html');
+                }else{
+                  //res.sendStatus(404);
+                  res.redirect(data.BaseUrl+'Login.html');
+                }
+              }
+              else{
+                console.log('No rec fund');
+                res.send(404);
+              }
+        }
+    });
+}catch(err){
+    console.log(err.message)
+}finally{
+   //connection.end();
+}  
+
+});
+
+app.get("/getEmail",(req,res)=>{
+    var email=req.query.Email;
+    try{    
+      connection.connect();
+      connection.query('SELECT * from User where UserEmail = ? ;',[email],(err,rows,fields)=>{
+          if(err){
+              console.log(err);
+              res.sendStatus(400);
+          }
+          else{ var output={ result : "" }
+                  if(rows.length === 0 ){
+                    output.result="OK";
+                  }else{
+                    output.result="Email already present";
+                  }
+                  console.log(output);
+                  res.send(output);
+          }
+      });
+  }catch(err){
+      console.log(err.message)
+  }finally{
+    //connection.end();
+  }  
+});
