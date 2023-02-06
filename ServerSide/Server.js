@@ -4,22 +4,22 @@ const mysql = require("mysql2");
 const connection = mysql.createConnection(data.dbparams);
 
 const bodyParser = require("body-parser");
-
+const cors = require("cors");
 const express = require("express");
 const { ok } = require("assert");
 const { error } = require("console");
-  const app = express();
-  
-  app.use(express.static("ClientSide"));
+const app = express();
+
+//app.use(cors());
+app.use(express.static("ClientSide"));
   //app.use(bodyParser.urlencoded({ extended: true }));
-  var jsonParser = bodyParser.json();
-  var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+var jsonParser = bodyParser.json();
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-  app.listen(1080, function () {
-    console.log("server listening at port 1080..."+data.ENV);
-  });
-
+app.listen(1080, function () {
+  console.log("server listening at port 1080..."+data.ENV);
+});
 
 app.get("/hello", (req, resp) => {
     resp.send("Hello world");
@@ -49,7 +49,7 @@ app.post("/registerNewUser",urlencodedParser,(req,res)=>{
         }finally{
            //connection.end();
         }  
-});
+ });
 
 app.post("/userLogin",urlencodedParser,(req,res)=>{
   //console.log(req.body);
@@ -88,7 +88,7 @@ app.post("/userLogin",urlencodedParser,(req,res)=>{
 
 });
 
-app.get("/getEmail",(req,res)=>{
+app.get("/getEmail",cors(),(req,res)=>{
     var email=req.query.Email;
     try{    
       connection.connect();
@@ -100,8 +100,8 @@ app.get("/getEmail",(req,res)=>{
           else{ var output={ result : "" }
                   if(rows.length === 0 ){
                     output.result="OK";
-                  }else{
-                    output.result="Email already present";
+                  }else if(rows.length === 1){
+                    output.result="Email already present " + rows[0].UserEmail;
                   }
                   console.log(output);
                   res.send(output);

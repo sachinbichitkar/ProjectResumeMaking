@@ -6,10 +6,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
             type: "get",
             dataType: "json",
             sucess:(datagivenbyserver)=>{
-            // $('.fittoscreen').append($('<p></p>').Text(datagivenbyserver));
-                console.log("sucess to contact server -->>" + datagivenbyserver.result);},
-            error:(errorgivenbyserver)=>{console.log("failed to contact server -->>" + errorgivenbyserver);}
-           }
+                alert(datagivenbyserver);
+            },
+            error:(errorgivenbyserver)=>{
+                alert(errorgivenbyserver);
+            }
+        };
            $.ajax(findEmail);
     });
 });
